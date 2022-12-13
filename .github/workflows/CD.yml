@@ -9,19 +9,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: GithubPackages Login
-      uses: docker/login-action@v1.10.0
+      uses: docker/login-action@v1.10.0-node16
       with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
     - name: Extract metadata (tags, labels) for Docker
       id: meta
-      uses: docker/metadata-action@v3
+      uses: docker/metadata-action@v3-node16
       with:
         images: ghcr.io/${{ github.repository }}
     - name: Build and push Docker images
       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v2-node16
       with:
         context: .
         push: true
