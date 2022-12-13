@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: GithubPackages Login
-      uses: docker/login-action@v1.10.0-node16
+      uses: docker/login-action@v1.10.0
       with:
           registry: ghcr.io
           username: ${{ github.actor }}
