@@ -3,6 +3,9 @@ import time
 import requests
 from google.cloud import run_v2
 
+for name, value in os.environ.items():
+    print("{0}: {1}".format(name, value))
+
 PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 REGION = os.getenv("GOOGLE_CLOUD_REGION", "us-central1")
 SERVICE_NAME = os.getenv("K_SERVICE")
@@ -11,6 +14,9 @@ HEARTBEAT_URL = "http://127.0.0.1:5000/health"
 
 
 def delete_service():
+    print("Deleting service")
+    for name, value in os.environ.items():
+        print("{0}: {1}".format(name, value))
     if not PROJECT or not SERVICE_NAME:
         print("Cannot delete: missing env vars")
         return
