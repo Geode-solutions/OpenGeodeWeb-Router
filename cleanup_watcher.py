@@ -9,8 +9,6 @@ for name, value in os.environ.items():
 PARENT = os.getenv("PARENT")
 SERVICE_NAME = os.getenv("K_SERVICE")
 
-HEARTBEAT_URL = "http://127.0.0.1:5000/health"
-
 
 def delete_service():
     print("Deleting service")
@@ -24,13 +22,12 @@ def delete_service():
 
 
 while True:
-    time.sleep(60)
-    delete_service()
-    break
-    # try:
-    #     r = requests.get(HEARTBEAT_URL, timeout=5)
-    #     if r.status_code != 200:
-    #         raise Exception("Bad status")
-    # except Exception:
-    #     delete_service()
-    #     break
+    time.sleep(30)
+    try:
+        response = requests.get("http://127.0.0.1/geode/health", timeout=5)
+        print("response", response)
+        if response.status_code != 200:
+            raise Exception("Bad status")
+    except Exception:
+        delete_service()
+        break
