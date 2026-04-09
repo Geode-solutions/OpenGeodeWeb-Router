@@ -3,8 +3,6 @@ import time
 import requests
 from google.cloud import run_v2
 
-for name, value in os.environ.items():
-    print("{0}: {1}".format(name, value))
 
 PARENT = os.getenv("PARENT")
 SERVICE_NAME = os.getenv("K_SERVICE")
@@ -25,7 +23,9 @@ while True:
     time.sleep(30)
     try:
         response = requests.get("http://127.0.0.1/geode/health", timeout=5)
-        print("response", response.data)
+        print("response", response, flush=True)
+        print("response.status_code", response.status_code, flush=True)
+        print("response.data", response.data, flush=True)
         if response.status_code != 200 or response.data.health == False:
             raise Exception("Bad status")
     except Exception:
