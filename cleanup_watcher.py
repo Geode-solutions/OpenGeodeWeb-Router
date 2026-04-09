@@ -24,16 +24,7 @@ while True:
     try:
         response = requests.get("http://127.0.0.1/geode/health", timeout=5)
         print("response", response, flush=True)
-        print(
-            "response.status_code",
-            response.status_code,
-            response.status_code != 200,
-            flush=True,
-        )
-        print("response.data", response.get_data(), flush=True)
-        print("response.data", response.data, flush=True)
-        print("response.data.health", response.data.health, flush=True)
-        if response.status_code != 200 or response.data.health == False:
+        if response.status_code != 200:
             raise Exception("Bad status")
     except Exception:
         delete_service()
