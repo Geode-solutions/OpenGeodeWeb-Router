@@ -1,7 +1,7 @@
 FROM nginx:alpine
 
 RUN apk add python3 py3-pip supervisor
-RUN pip3 install google-cloud-run
+RUN pip3 install --break-system-packages google-cloud-run
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
