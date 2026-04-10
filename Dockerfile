@@ -1,9 +1,14 @@
 FROM nginx:alpine
+
+RUN apk add python3 py3-pip supervisor
+RUN pip3 install --break-system-packages google-cloud-run
+
 COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN \
-    apk add openssl && \
-    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/nginx.key -out /etc/nginx/nginx.crt -subj "/C=FR/ST=France/L=Pau/O=Geode-solutions"
+COPY supervisord.conf /etc/supervisord.conf
+RUN mkdir -p /var/log/supervisor
 
+COPY cleanup_watcher.py /usr/local/bin/cleanup_watcher.py
+RUN chmod +x /usr/local/bin/cleanup_watcher.py
 
-EXPOSE 443
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
