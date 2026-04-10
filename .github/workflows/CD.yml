@@ -8,5 +8,4 @@ jobs:
     uses: Geode-solutions/actions/.github/workflows/docker-build-squash-push.yml@master
     with:
       tag: ${{ github.ref_name }}
-    secrets: 
-      TOKEN: ${{secrets.GITHUB_TOKEN}}
+    secrets: inherit
