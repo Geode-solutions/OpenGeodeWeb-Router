@@ -4,6 +4,27 @@ set -uo pipefail
 PARENT="${PARENT:?PARENT env var required}"
 SERVICE_NAME="${K_SERVICE:?K_SERVICE env var required}"
 
+# =============================================
+# Cleanup / Crash Handler
+# =============================================
+cleanup() {
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0 ]; then
+        echo "=================================================================="
+        echo "❌ SCRIPT CRASHED with exit code ${EXIT_CODE}"
+        echo "   This usually means something went wrong during health checking"
+        echo "   or during the delete operation."
+        echo "=================================================================="
+    else
+        echo "Script finished normally."
+    fi
+}
+
+# Catch errors, interrupts, and normal exit
+trap cleanup EXIT
+trap 'echo "❌ Script interrupted (SIGINT)"; exit 1' INT
+trap 'echo "❌ Script terminated (SIGTERM)"; exit 1' TERM
+
 delete_service() {
     echo "Flask appears down → Deleting service ${PARENT}/services/${SERVICE_NAME}"
 
@@ -41,3 +62,5 @@ while true; do
         break
     fi
 done
+
+echo "Health check loop ended."
