@@ -2,6 +2,7 @@ FROM nginx:alpine
 
 RUN apk add curl jq bash supervisor
 
+COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY supervisor/supervisord.conf /etc/supervisord.conf
 RUN mkdir -p /var/log/supervisor
