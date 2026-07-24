@@ -1,6 +1,6 @@
 FROM nginx:alpine
 
-RUN apk add curl jq supervisor
+RUN apk add curl jq bash supervisor
 
 
 COPY supervisor/supervisord.conf /etc/supervisord.conf
