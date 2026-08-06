@@ -2,15 +2,12 @@ FROM nginx:alpine
 
 RUN apk add curl jq bash supervisor
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx /etc/nginx
 
-COPY supervisor/supervisord.conf /etc/supervisord.conf
+COPY supervisord /etc/supervisord
 RUN mkdir -p /var/log/supervisor
-RUN mkdir -p /etc/supervisor/conf.d
-
-COPY supervisor/conf.d /etc/supervisor/conf.d
 
 COPY cleanup.bash /usr/local/bin/cleanup.bash
 RUN chmod +x /usr/local/bin/cleanup.bash
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord/supervisord.conf"]
