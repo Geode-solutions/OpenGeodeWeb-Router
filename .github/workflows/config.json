@@ -1,0 +1,6 @@
+{
+  "node": false,
+  "python": false,
+  "docker": true,
+  "pyinstaller": false
+}
