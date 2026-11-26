@@ -26,9 +26,19 @@ delete_service() {
 
     if [[ "$http_code" == 2* ]]; then
         echo "Service deletion request accepted (HTTP ${http_code})"
+    elif [[ "$http_code" == 404 ]]; then
+        echo "Service already deleted (HTTP ${http_code})"
     else
         echo "Delete failed (HTTP ${http_code}): $(cat /tmp/delete_response.json)"
+        return 1
     fi
+}
+
+# Once the service is deleted, the instance keeps running (and being billed) until its
+# open requests, like event streams, reach the request timeout: stop it right away
+stop_instance() {
+    echo "Stopping instance"
+    supervisorctl -c /etc/supervisord.conf shutdown
 }
 
 while true; do
@@ -37,7 +47,9 @@ while true; do
     echo "response ${response}"
 
     if [ "$response" != "200" ]; then
-        delete_service
+        if delete_service; then
+            stop_instance
+        fi
         break
     fi
 done
